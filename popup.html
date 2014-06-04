@@ -1,4 +1,4 @@
-<chrome.windows.getAll(allWindows);!doctype html>
+<!doctype html>
 <html>
   <head>
     <title>Getting Started Extension's Popup</title>
@@ -7,19 +7,17 @@
         min-width: 357px;
         overflow-x: hidden;
       }
-
-      img {
-        margin: 5px;
-        border: 2px solid black;
-        vertical-align: middle;
-        width: 75px;
-        height: 75px;
-      }
-      table {
+      .windowContainer {
+          padding: 5px;
+          margin-bottom: 5px;
           border: solid 1px #000;
       }
-      .clickable:hover {
+      .button {
+          padding: 2px 5px;
           cursor: pointer;
+      }
+      .button:hover {
+          background-color: #bbb;
       }
     </style>
 

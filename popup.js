@@ -17,18 +17,23 @@ var tabButler = {
     },
 
     tabsInWindow: function (ts) {
-        var elem = document.createElement("table");
+        var elem = document.createElement("div");
+        elem.className = "windowContainer";
 
         for (var i = 0; i < ts.length; i++)
         {
-            var item = document.createElement("tr");
-            var name = document.createElement("td");
-            var closeCell = document.createElement("td");
+            var item = document.createElement("div");
+
+            var name = document.createElement("span");
+            name.className = "button";
             name.innerHTML = ts[i].title;
-            closeCell.innerHTML = "Close";
-            item.className = "clickable";
             name.onclick = tabButler.highlightTabFn(ts[i].windowId, ts[i].index);
+            
+            var closeCell = document.createElement("span");
+            closeCell.className = "button";
+            closeCell.innerHTML = "Close";
             closeCell.onclick = tabButler.closeTabFn(ts[i].id);
+
             item.appendChild(name);
             item.appendChild(closeCell);
             elem.appendChild(item);
