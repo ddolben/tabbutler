@@ -19,11 +19,13 @@ var tabButler = {
     tabsInWindow: function (ts) {
         var elem = document.createElement("div");
         elem.className = "windowContainer";
+        elem.id = ts[0].windowId;
 
         for (var i = 0; i < ts.length; i++)
         {
             var item = document.createElement("div");
             item.className = "tabContainer";
+            item.id = ts[i].id;
 
             var name = document.createElement("span");
             name.className = "left button truncated";
@@ -56,6 +58,10 @@ var tabButler = {
         }
     },
 
+    moveTab: function (tabId, newWindowId, newIndex) {
+        chrome.tabs.move(tabId, {windowId: newWindowId, index: newIndex});
+    },
+
     reload: function () {
         var container = document.getElementById("content");
         container.innerHTML = "";
@@ -65,6 +71,19 @@ var tabButler = {
 
 document.addEventListener('DOMContentLoaded', function () {
     tabButler.reload();
+
+    document.getElementById("content").addEventListener("DOMNodeInserted", function() {
+        $(".windowContainer").sortable({
+            connectWith: ".windowContainer",
+            update: function(event, ui) {
+                tabButler.moveTab(
+                    parseInt(ui.item.attr('id')),
+                    parseInt(ui.item.parent().attr('id')),
+                    ui.item.parent().sortable("toArray").indexOf(ui.item.attr('id'))
+                );
+            }
+        }).disableSelection();
+    }, false);
 });
 
 })();
