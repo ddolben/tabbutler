@@ -1,0 +1,50 @@
+body {
+    min-width: 357px;
+    overflow-x: hidden;
+}
+.windowContainer {
+    padding: 5px;
+    margin-bottom: 5px;
+    border: solid 1px #000;
+}
+.tabContainer {
+    padding: 2px;
+    width: 350px;
+    display: block;
+}
+.left {
+    float: left;
+    margin-right: 10px;
+}
+.right {
+    float: right;
+    margin-left: 10px;
+}
+.center {
+    display: block;
+    overflow: auto;
+    position: relative;
+}
+.truncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 270px;
+}
+
+.button {
+    cursor: pointer;
+    display: inline-block;
+}
+.button:hover {
+    background-color: #bbb;
+}
+
+.favicon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    padding-right: 5px;
+    position: relative;
+    top: -2px;
+}
