@@ -27,7 +27,7 @@ var tabButler = {
 
             var name = document.createElement("span");
             name.className = "left button truncated";
-            name.innerHTML = ts[i].title;
+            name.innerHTML = "<img class='favicon' src='" + ts[i].favIconUrl + "' />" + ts[i].title;
             name.onclick = tabButler.highlightTabFn(ts[i].windowId, ts[i].index);
             
             var closeCell = document.createElement("span");
