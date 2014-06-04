@@ -23,19 +23,25 @@ var tabButler = {
         for (var i = 0; i < ts.length; i++)
         {
             var item = document.createElement("div");
+            item.className = "tabContainer";
 
             var name = document.createElement("span");
-            name.className = "button fade";
+            name.className = "left button truncated";
             name.innerHTML = ts[i].title;
             name.onclick = tabButler.highlightTabFn(ts[i].windowId, ts[i].index);
             
             var closeCell = document.createElement("span");
-            closeCell.className = "button";
+            closeCell.className = "right button";
             closeCell.innerHTML = "Close";
             closeCell.onclick = tabButler.closeTabFn(ts[i].id);
 
+            var centerElem = document.createElement("span");
+            centerElem.className = "center";
+            centerElem.innerHTML = "&nbsp;";
+
             item.appendChild(name);
             item.appendChild(closeCell);
+            item.appendChild(centerElem); // Must be appended after first two
             elem.appendChild(item);
         }
 

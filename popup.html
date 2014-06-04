@@ -1,45 +1,64 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        min-width: 357px;
-        overflow-x: hidden;
-      }
-      .windowContainer {
-          padding: 5px;
-          margin-bottom: 5px;
-          border: solid 1px #000;
-      }
-      .fade {
-          float: left;
-          white-space: nowrap;
-          width: 280px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: inline-block;
-      }
-      .button {
-          padding: 2px 5px;
-          cursor: pointer;
-          display: inline-block;
-      }
-      .button:hover {
-          background-color: #bbb;
-      }
-    </style>
+<head>
+<title>Getting Started Extension's Popup</title>
+<style>
+body {
+    min-width: 357px;
+    overflow-x: hidden;
+}
+.windowContainer {
+    padding: 5px;
+    margin-bottom: 5px;
+    border: solid 1px #000;
+}
+.tabContainer {
+    padding: 2px;
+    width: 350px;
+    display: block;
+}
+.left {
+    float: left;
+    margin-right: 10px;
+}
+.right {
+    float: right;
+    margin-left: 10px;
+}
+.center {
+    display: block;
+    overflow: auto;
+    position: relative;
+}
+.truncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 270px;
+}
 
-    <!--
+.button {
+    cursor: pointer;
+    display: inline-block;
+}
+.button:hover {
+    background-color: #bbb;
+}
+</style>
+
+<!--
       - JavaScript and HTML must be in separate files: see our Content Security
       - Policy documentation[1] for details and explanation.
       -
       - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
      -->
-    <script src="popup.js"></script>
-  </head>
-  <body>
-    <div id="content"></div>
-  </body>
+<script src="popup.js"></script>
+</head>
+
+<body>
+    </div>
+        <div id="content">
+    </div>
+</body>
 </html>
 
