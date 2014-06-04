@@ -25,7 +25,7 @@ var tabButler = {
             var item = document.createElement("div");
 
             var name = document.createElement("span");
-            name.className = "button";
+            name.className = "button fade";
             name.innerHTML = ts[i].title;
             name.onclick = tabButler.highlightTabFn(ts[i].windowId, ts[i].index);
             
