@@ -1,41 +1,59 @@
 (function() {
-    var highlightTabFn = function (windowId, tabIndex) {
+
+var tabButler = {
+    highlightTabFn: function (windowId, tabIndex) {
         return function() {
-            console.log(windowId, tabIndex);
             chrome.tabs.highlight({windowId: windowId, tabs: [tabIndex]}, function(w) {
                 chrome.windows.update(w.id, {focused: true}, function() {});
             });
         };
-    };
+    },
 
-    var tabsInWindow = function (ts) {
+    closeTabFn: function (tabId) {
+        return function() {
+            chrome.tabs.remove(tabId);
+            tabButler.reload();
+        };
+    },
+
+    tabsInWindow: function (ts) {
         var elem = document.createElement("table");
 
         for (var i = 0; i < ts.length; i++)
         {
             var item = document.createElement("tr");
             var name = document.createElement("td");
-            var wname = document.createElement("td");
+            var closeCell = document.createElement("td");
             name.innerHTML = ts[i].title;
-            wname.innerHTML = ts[i].windowId;
+            closeCell.innerHTML = "Close";
             item.className = "clickable";
-            item.onclick = highlightTabFn(ts[i].windowId, ts[i].index);
+            name.onclick = tabButler.highlightTabFn(ts[i].windowId, ts[i].index);
+            closeCell.onclick = tabButler.closeTabFn(ts[i].id);
             item.appendChild(name);
-            item.appendChild(wname);
+            item.appendChild(closeCell);
             elem.appendChild(item);
         }
 
-        document.body.appendChild(elem);
-    };
+        var container = document.getElementById("content");
+        container.appendChild(elem);
+    },
 
-    var allWindows = function (ws) {
+    allWindows: function (ws) {
         for (var i = 0; i < ws.length; i++)
         {
-            chrome.tabs.query({windowId: ws[i].id}, tabsInWindow);
+            chrome.tabs.query({windowId: ws[i].id}, tabButler.tabsInWindow);
         }
-    };
+    },
 
-    document.addEventListener('DOMContentLoaded', function () {
-        chrome.windows.getAll(allWindows);
-    });
+    reload: function () {
+        var container = document.getElementById("content");
+        container.innerHTML = "";
+        chrome.windows.getAll(tabButler.allWindows);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+    tabButler.reload();
+});
+
 })();
