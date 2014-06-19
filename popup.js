@@ -17,38 +17,37 @@ var tabButler = {
     },
 
     tabsInWindow: function (ts) {
-        var elem = document.createElement("div");
-        elem.className = "windowContainer";
-        elem.id = ts[0].windowId;
+        var elem = $(document.createElement("div"));
+        elem.addClass("windowContainer");
+        elem.attr("id", ts[0].windowId)
 
         for (var i = 0; i < ts.length; i++)
         {
-            var item = document.createElement("div");
-            item.className = "tabContainer";
-            item.id = ts[i].id;
+            var item = $(document.createElement("div"));
+            item.addClass("tabContainer");
+            item.attr("id", ts[i].id)
 
-            var name = document.createElement("span");
-            name.className = "left button truncated";
-            name.innerHTML = "<img class='favicon' src='" + ts[i].favIconUrl + "' />" + ts[i].title;
-            name.onclick = tabButler.highlightTabFn(ts[i].windowId, ts[i].index);
+            var name = $(document.createElement("span"));
+            name.addClass("left button truncated");
+            name.html("<img class='favicon' src='" + ts[i].favIconUrl + "' />" + ts[i].title);
+            name.click(tabButler.highlightTabFn(ts[i].windowId, ts[i].index));
             
-            var closeCell = document.createElement("span");
-            closeCell.className = "right button";
-            closeCell.innerHTML = "Close";
-            closeCell.onclick = tabButler.closeTabFn(ts[i].id);
+            var closeCell = $(document.createElement("span"));
+            closeCell.addClass("right button");
+            closeCell.html("Close");
+            closeCell.click(tabButler.closeTabFn(ts[i].id));
 
-            var centerElem = document.createElement("span");
-            centerElem.className = "center";
-            centerElem.innerHTML = "&nbsp;";
+            var centerElem = $(document.createElement("span"));
+            centerElem.addClass("center");
+            centerElem.html("&nbsp;");
 
-            item.appendChild(name);
-            item.appendChild(closeCell);
-            item.appendChild(centerElem); // Must be appended after first two
-            elem.appendChild(item);
+            item.append(name);
+            item.append(closeCell);
+            item.append(centerElem); // Must be appended after first two
+            elem.append(item);
         }
 
-        var container = document.getElementById("content");
-        container.appendChild(elem);
+        $("#content").append(elem);
     },
 
     allWindows: function (ws) {
@@ -59,7 +58,15 @@ var tabButler = {
     },
 
     moveTab: function (tabId, newWindowId, newIndex) {
-        chrome.tabs.move(tabId, {windowId: newWindowId, index: newIndex});
+        chrome.tabs.move(tabId, {windowId: newWindowId, index: newIndex}, function () {
+            var elem = $("#" + tabId + " .left");
+            elem.unbind("click");
+            elem.click(tabButler.highlightTabFn(newWindowId, newIndex));
+
+            elem = $("#" + tabId + " .right");
+            elem.unbind("click");
+            elem.click(tabButler.closeTabFn(tabId));
+        });
     },
 
     reload: function () {
