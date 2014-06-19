@@ -11,8 +11,17 @@ var tabButler = {
 
     closeTabFn: function (tabId) {
         return function() {
-            chrome.tabs.remove(tabId);
-            tabButler.reload();
+            chrome.tabs.remove(tabId, function() {
+                $("#" + tabId).remove();
+            });
+        };
+    },
+
+    openNewWindowForTabFn: function (tabId) {
+        return function() {
+            chrome.windows.create({tabId: tabId, focused: true}, function() {
+                window.close();
+            });
         };
     },
 
