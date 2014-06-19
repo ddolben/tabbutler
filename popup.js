@@ -17,14 +17,6 @@ var tabButler = {
         };
     },
 
-    openNewWindowForTabFn: function (tabId) {
-        return function() {
-            chrome.windows.create({tabId: tabId, focused: true}, function() {
-                window.close();
-            });
-        };
-    },
-
     tabsInWindow: function (ts) {
         var elem = $(document.createElement("div"));
         elem.addClass("windowContainer");
@@ -60,28 +52,54 @@ var tabButler = {
     },
 
     allWindows: function (ws) {
+        var remaining = ws.length;
         for (var i = 0; i < ws.length; i++)
         {
-            chrome.tabs.query({windowId: ws[i].id}, tabButler.tabsInWindow);
+            chrome.tabs.query({windowId: ws[i].id}, function(ts) {
+                tabButler.tabsInWindow(ts);
+                if (--remaining <= 0)
+                {
+                    tabButler.addNewWindowBox();
+                }
+            });
         }
     },
 
     moveTab: function (tabId, newWindowId, newIndex) {
-        chrome.tabs.move(tabId, {windowId: newWindowId, index: newIndex}, function () {
-            var elem = $("#" + tabId + " .left");
-            elem.unbind("click");
-            elem.click(tabButler.highlightTabFn(newWindowId, newIndex));
+        console.log(newWindowId);
+        if (newWindowId < 0)
+        {
+            chrome.windows.create({tabId: tabId, focused: true}, function() {
+                window.close();
+            });
+        }
+        else
+        {
+            chrome.tabs.move(tabId, {windowId: newWindowId, index: newIndex}, function () {
+                var elem = $("#" + tabId + " .left");
+                elem.unbind("click");
+                elem.click(tabButler.highlightTabFn(newWindowId, newIndex));
 
-            elem = $("#" + tabId + " .right");
-            elem.unbind("click");
-            elem.click(tabButler.closeTabFn(tabId));
-        });
+                elem = $("#" + tabId + " .right");
+                elem.unbind("click");
+                elem.click(tabButler.closeTabFn(tabId));
+            });
+        }
     },
 
     reload: function () {
         var container = document.getElementById("content");
         container.innerHTML = "";
         chrome.windows.getAll(tabButler.allWindows);
+    },
+
+    addNewWindowBox: function() {
+        var elem = $(document.createElement("div"));
+        elem.addClass("windowContainer");
+        elem.addClass("newWindowBox");
+        elem.attr("id", "-1");
+        elem.html("New Window");
+        $("#content").append(elem);
     }
 };
 
