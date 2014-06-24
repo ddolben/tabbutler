@@ -110,11 +110,13 @@ document.addEventListener('DOMContentLoaded', function () {
         $(".windowContainer").sortable({
             connectWith: ".windowContainer",
             update: function(event, ui) {
-                tabButler.moveTab(
-                    parseInt(ui.item.attr('id')),
-                    parseInt(ui.item.parent().attr('id')),
-                    ui.item.parent().sortable("toArray").indexOf(ui.item.attr('id'))
-                );
+                if (this === ui.item.parent()[0]) {
+                    tabButler.moveTab(
+                        parseInt(ui.item.attr('id')),
+                        parseInt(ui.item.parent().attr('id')),
+                        ui.item.parent().sortable("toArray").indexOf(ui.item.attr('id'))
+                    );
+                }
             }
         }).disableSelection();
     }, false);
